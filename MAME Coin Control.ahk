@@ -1,6 +1,6 @@
 ﻿; MAME Coin Control
 ; by chinagreenelvis
-; Version 1.00
+; Version 1.01
 
 ; This script assumes that you leave the bindings for "start" and "coin" to thier MAME defaults; Joy8 (Start on an XBox 360 controller) will initially begin the coin control for each player that presses it and will then subsequently act as a normal start button. Holding the start button on P1 will toggle activation of the script. Joy10 (the Right Thumbstick) will act as the service button (coins) when the script is deactivated.
 
@@ -157,7 +157,7 @@ Return
 ExitTimer:
 	IfWinNotExist, ahk_class MAME
 	{
-		Loop, %IncrementalCoins%
+		WinWaitActive, ahk_class MAME, , 5
 		ExitApp
 	}
 Return
