@@ -6,6 +6,6 @@ It can be toggled using the INI file, by pressing F1, or holding Button 8 on the
 
 MAME must be started using the command line option: -keyboardprovider dinput
 
-All controllers must be connected and turned on before starting the script. MAME's keybindings for "start" and "service" should all be left to their defaults (Numbers 1-8), including the start buttons for individual player controls.
+All controllers must be connected and turned on before starting the script. MAME's keybindings for "start" and "coin" should all be left to their defaults (Numbers 1-8), including the start buttons for individual player controls.
 
 The included sound files for activation/deactivation notifications were created using the website https://15.ai/
