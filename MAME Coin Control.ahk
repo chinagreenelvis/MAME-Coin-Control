@@ -1,6 +1,6 @@
 ﻿; MAME Coin Control
 ; by chinagreenelvis
-; Version 1.01
+; Version 1.02
 
 ; This script assumes that you leave the bindings for "start" and "coin" to thier MAME defaults; Joy8 (Start on an XBox 360 controller) will initially begin the coin control for each player that presses it and will then subsequently act as a normal start button. Holding the start button on P1 will toggle activation of the script. Joy10 (the Right Thumbstick) will act as the service button (coins) when the script is deactivated.
 
@@ -54,6 +54,16 @@ Else
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; START
 
+WMI := ComObjGet("winmgmts:")
+ComObjConnect(deleteSink := ComObjCreate("WbemScripting.SWbemSink"), EventSinkDelete)
+WMI.ExecNotificationQueryAsync(deleteSink, "select * from __InstanceDeletionEvent Within 1 Where TargetInstance ISA 'Win32_Process'")
+
+Process, Wait, mame.exe, 10
+If (!ErrorLevel)
+{
+	ExitApp
+}
+
 If GetKeyState("1JoyName")
 {
  Hotkey, 1Joy8, 1J8
@@ -75,12 +85,21 @@ If GetKeyState("4JoyName")
  Hotkey, 4Joy10, 4J10
 }
 
-WinWaitActive, ahk_class MAME
-SetTimer, ExitTimer, 3000
-
 Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; FUNCTIONS
+
+class EventSinkDelete
+{
+	OnObjectReady(obj)
+	{
+		Process, Wait, mame.exe, 5
+		If (ErrorLevel)
+		{
+			ExitApp
+		}
+	}
+}
 
 JoyPress(Num := 0, Num2 := 0)
 {
@@ -151,14 +170,6 @@ Timer4:
 			Send {8 down}{8 up}
 			Sleep, 50
 		}
-	}
-Return
-
-ExitTimer:
-	IfWinNotExist, ahk_class MAME
-	{
-		WinWaitActive, ahk_class MAME, , 5
-		ExitApp
 	}
 Return
 
