@@ -94,7 +94,7 @@ class EventSinkDelete
 	OnObjectReady(obj)
 	{
 		Process, Wait, mame.exe, 5
-		If (ErrorLevel)
+		If (!ErrorLevel)
 		{
 			ExitApp
 		}
